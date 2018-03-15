@@ -48,8 +48,7 @@ class IntelList extends React.Component {
     intelRef.update({
       headline: intel.headline + ' ole',
       content: intel.content
-    })
-      .then(() => console.log('IntelList updated'))
+    }).then(() => console.log('IntelList updated'))
       .catch(err => console.log('IntelList  err', err))
   }
 
@@ -58,7 +57,7 @@ class IntelList extends React.Component {
       {this.state.intels.map(intel => {
         return (<li key={intel.key}>
           {intel.headline}
-          <button onClick={() => this.updateIntel(intel)}>Update</button>
+          <button onClick={() => this.updateIntel(intel)}>Update + ole</button>
           <button onClick={() => this.deleteIntel(intel.key)}>Delete</button>
           </li>)
       })}
