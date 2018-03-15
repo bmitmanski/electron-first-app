@@ -16,6 +16,8 @@ class AddIntel extends React.Component {
     newIntelRef.set({
       headline: headline,
       content: headline + ' bamboo'
+    }).then(() => {
+      this.headlineInput.value = '';
     })
   }
 

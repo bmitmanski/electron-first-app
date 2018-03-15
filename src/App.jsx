@@ -8,7 +8,7 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     var config = {
-      apiKey: "AIzaSyDVSWdb1vg2F4s5X2eFzMthX6l2hQU_1AI",
+      apiKey: "",
       authDomain: "mitapp-1.firebaseapp.com",
       databaseURL: "https://mitapp-1.firebaseio.com",
       projectId: "mitapp-1",
