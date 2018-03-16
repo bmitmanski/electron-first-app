@@ -39,7 +39,7 @@ class IntelList extends React.Component {
 
     intelRef.remove()
       .then(() => console.log('IntelList deleted'))
-      .catch(err => console.log('IntelList  err', err))
+      .catch(err => console.error('IntelList  err', err))
   }
 
   updateIntel(intel) {
@@ -49,7 +49,7 @@ class IntelList extends React.Component {
       headline: intel.headline + ' ole',
       content: intel.content
     }).then(() => console.log('IntelList updated'))
-      .catch(err => console.log('IntelList  err', err))
+      .catch(err => console.error('IntelList  err', err))
   }
 
   render() {
