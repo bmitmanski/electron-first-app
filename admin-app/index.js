@@ -1,5 +1,6 @@
 const express = require("express");
 var admin = require('firebase-admin');
+const hazel = require('hazel-server')
 
 var serviceAccount = require('./mitapp-1-firebase-key');
 
@@ -10,7 +11,15 @@ admin.initializeApp({
 
 let app = express();
 
+const hazelConfig = {
+  repository: 'electron-first-app',
+  account: 'bmitmanski',
+  interval: 1
+};
 
+app.use('/mitapp', (req, res) => {
+  hazel(hazelConfig)(req, res)
+});
 
 app.use('/token/:uid', (req, res) => {
   const uid = req.params.uid;
