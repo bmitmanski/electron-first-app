@@ -1,6 +1,7 @@
 import { app, BrowserWindow, autoUpdater, dialog } from 'electron';
 import installExtension, { REACT_DEVELOPER_TOOLS } from 'electron-devtools-installer';
 import { enableLiveReload } from 'electron-compile';
+require('electron-squirrel-startup');
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -28,6 +29,8 @@ const createWindow = async () => {
     mainWindow.webContents.openDevTools();
   }
 
+  mainWindow.version = app.getVersion();
+
   // Emitted when the window is closed.
   mainWindow.on('closed', () => {
     // Dereference the window object, usually you would store windows
@@ -40,7 +43,20 @@ const createWindow = async () => {
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
-app.on('ready', createWindow);
+app.on('ready', () => {
+  createWindow();
+  sendStatusToWindow('ola ole');
+  const server = 'http://localhost:3000/nuts';
+  const feed = `${server}/update/${process.platform}/${app.getVersion()}`;
+  console.log('index feed feed', feed);
+
+  autoUpdater.setFeedURL(feed);
+
+  setInterval(() => {
+    sendStatusToWindow('feedurl ', feed);
+    autoUpdater.checkForUpdates()
+  }, 60000)
+});
 
 // Quit when all windows are closed.
 app.on('window-all-closed', () => {
@@ -62,40 +78,50 @@ app.on('activate', () => {
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and import them here.
 
-// //-------------------------------------------------------------------
-// // Auto updates
-// //-------------------------------------------------------------------
-// const sendStatusToWindow = (text) => {
-//   log.info(text);
-//   if (mainWindow) {
-//     mainWindow.webContents.send('message', text);
-//   }
-// };
-//
-// autoUpdater.on('checking-for-update', () => {
-//   sendStatusToWindow('Checking for update...');
-// });
-// autoUpdater.on('update-available', info => {
-//   sendStatusToWindow('Update available.');
-// });
-// autoUpdater.on('update-not-available', info => {
-//   sendStatusToWindow('Update not available.');
-// });
-// autoUpdater.on('error', err => {
-//   sendStatusToWindow(`Error in auto-updater: ${err.toString()}`);
-// });
-// autoUpdater.on('download-progress', progressObj => {
-//   sendStatusToWindow(
-//     `Download speed: ${progressObj.bytesPerSecond} - Downloaded ${progressObj.percent}% (${progressObj.transferred} + '/' + ${progressObj.total} + )`
-//   );
-// });
-// autoUpdater.on('update-downloaded', info => {
-//   sendStatusToWindow('Update downloaded; will install now');
-// });
-//
-// autoUpdater.on('update-downloaded', info => {
-//   // Wait 5 seconds, then quit and install
-//   // In your application, you don't need to wait 500 ms.
-//   // You could call autoUpdater.quitAndInstall(); immediately
-//   autoUpdater.quitAndInstall();
-// });
+//-------------------------------------------------------------------
+// Auto updates
+//-------------------------------------------------------------------
+const sendStatusToWindow = (text) => {
+  console.log('index sendStatusToWindow text', text);
+  // log.info(text);
+  if (mainWindow) {
+    mainWindow.webContents.send('message', text);
+  }
+};
+
+autoUpdater.on('checking-for-update', () => {
+  sendStatusToWindow('Checking for update...');
+});
+autoUpdater.on('update-available', info => {
+  sendStatusToWindow('Update available. ' + info);
+});
+autoUpdater.on('update-not-available', info => {
+  sendStatusToWindow('Update not available. ' + info);
+});
+autoUpdater.on('error', err => {
+  sendStatusToWindow(`Error in auto-updater: ${err.toString()}`);
+});
+autoUpdater.on('download-progress', progressObj => {
+  sendStatusToWindow(
+    `Download speed: ${progressObj.bytesPerSecond} - Downloaded ${progressObj.percent}% (${progressObj.transferred} + '/' + ${progressObj.total} + )`
+  );
+});
+autoUpdater.on('update-downloaded', info => {
+  sendStatusToWindow('Update downloaded; will install now '+info);
+  // Wait 5 seconds, then quit and install
+  // In your application, you don't need to wait 500 ms.
+  // You could call autoUpdater.quitAndInstall(); immediately
+
+  const dialogOpts = {
+    type: 'info',
+    buttons: ['Restart', 'Later'],
+    title: 'Application Update',
+    message: process.platform === 'win32' ? releaseNotes : releaseName,
+    detail: 'A new version has been downloaded. Restart the application to apply the updates.'
+  };
+
+  dialog.showMessageBox(dialogOpts, (response) => {
+    if (response === 0) autoUpdater.quitAndInstall()
+  })
+  // autoUpdater.quitAndInstall();
+});

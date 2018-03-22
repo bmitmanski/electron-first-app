@@ -8,13 +8,17 @@
 </body>
 
 <script type="text/jsx">
+
 import React from 'react';
+import electron from 'electron';
 import ReactDOM from 'react-dom';
 import {AppContainer} from 'react-hot-loader';
+var currentWindow = electron.remote.getCurrentWindow();
+var version = currentWindow.version;
 
 const render = () => {
   const App = require('./App').default;
-  ReactDOM.render(<AppContainer><App /></AppContainer>, document.getElementById('App'));
+  ReactDOM.render(<AppContainer><App version={version} /></AppContainer>, document.getElementById('App'));
 };
 
 render();

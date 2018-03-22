@@ -1,6 +1,9 @@
 const express = require("express");
 var admin = require('firebase-admin');
-const hazel = require('hazel-server')
+// const hazel = require('hazel-server')
+
+var Nuts = require('nuts-serve').Nuts;
+
 
 var serviceAccount = require('./mitapp-1-firebase-key');
 
@@ -11,15 +14,20 @@ admin.initializeApp({
 
 let app = express();
 
-const hazelConfig = {
-  repository: 'electron-first-app',
-  account: 'bmitmanski',
-  interval: 1
-};
+// const hazelConfig = {
+//   repository: 'electron-first-app',
+//   account: 'bmitmanski',
+//   interval: 180
+// };
 
-app.use('/mitapp', (req, res) => {
-  hazel(hazelConfig)(req, res)
+var nuts = Nuts({
+  // GitHub configuration
+  repository: "bmitmanski/electron-first-app",
+  token: "",
+  cacheMaxAge: 1000 * 60 * 3
 });
+
+app.use('/nuts', nuts.router);
 
 app.use('/token/:uid', (req, res) => {
   const uid = req.params.uid;

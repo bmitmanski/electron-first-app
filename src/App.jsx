@@ -3,6 +3,7 @@ import * as firebase from "firebase";
 import AddIntel from './AddIntel';
 import Auth from './Auth';
 import IntelList from './IntelList';
+import {ipcRenderer} from 'electron';
 
 class App extends React.Component {
 
@@ -18,11 +19,16 @@ class App extends React.Component {
     };
     console.log('App constructor initapp');
     firebase.initializeApp(config);
+
+    ipcRenderer.on('message', (event, message) => {
+      console.log(event, message);
+    })
   }
 
   render() {
     return (<div>
       <h2>Welcome to React! mate 1</h2>
+      <p>Version: {this.props.version}</p>
       <Auth db={firebase}/>
       <AddIntel db={firebase}/>
       <IntelList db={firebase}/>

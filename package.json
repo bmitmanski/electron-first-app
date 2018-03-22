@@ -1,14 +1,14 @@
 {
   "name": "electronMitApp",
   "productName": "electronMitApp",
-  "version": "0.1.1",
+  "version": "0.1.11",
   "description": "My Electron application description",
   "main": "src/index.js",
   "scripts": {
     "start": "electron-forge start -- %NODE_DEBUG_OPTION%",
     "package": "electron-forge package",
     "make": "electron-forge make",
-    "publish": "electron-forge publish --from-dry-run --auth-token=bmitmanski:8bc89de0e452b44510de71b3efb7d80eb3fd6fa5",
+    "publish": "electron-forge publish --auth-token",
     "lint": "eslint --cache --color --ext .jsx,.js src"
   },
   "keywords": [],
@@ -40,7 +40,8 @@
       "electronInstallerRedhat": {},
       "github_repository": {
         "owner": "bmitmanski",
-        "name": "electron-first-app"
+        "name": "electron-first-app",
+        "draft": false
       },
       "windowsStoreConfig": {
         "packageName": "",
@@ -57,7 +58,8 @@
     "react-hot-loader": "^3.1.3",
     "firebase": "^4.11.0",
     "request-promise": "^4.2.2",
-    "request": "^2.85.0"
+    "request": "^2.85.0",
+    "electron-squirrel-startup": "^1.0.0"
   },
   "devDependencies": {
     "babel-plugin-transform-async-to-generator": "^6.24.1",
