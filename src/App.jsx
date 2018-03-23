@@ -27,7 +27,7 @@ class App extends React.Component {
 
   render() {
     return (<div>
-      <h2>Welcome to React! mate 1</h2>
+      <h2>Welcome to React! mate what</h2>
       <p>Version: {this.props.version}</p>
       <Auth db={firebase}/>
       <AddIntel db={firebase}/>

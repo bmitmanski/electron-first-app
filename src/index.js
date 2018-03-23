@@ -1,14 +1,18 @@
 import { app, BrowserWindow, autoUpdater, dialog } from 'electron';
 import installExtension, { REACT_DEVELOPER_TOOLS } from 'electron-devtools-installer';
 import { enableLiveReload } from 'electron-compile';
+var log = require('electron-log');
+autoUpdater.logger = log;
+autoUpdater.logger.transports.file.level = "info"
+log.transports.file.level = 'info';
+log.transports.file.file = 'log.log';
 require('electron-squirrel-startup');
-
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let mainWindow;
 
-app.commandLine.appendSwitch('remote-debugging-port', '9222');
-const isDevMode = process.execPath.match(/[\\/]electron/);
+// const isDevMode = process.execPath.match(/[\\/]electron/);
+const isDevMode = true;
 
 if (isDevMode) enableLiveReload({ strategy: 'react-hmr' });
 
@@ -24,12 +28,13 @@ const createWindow = async () => {
   // mainWindow.loadURL(`file://${__dirname}/login.html`);
 
   // Open the DevTools.
-  if (isDevMode) {
+  // if (isDevMode) {
     await installExtension(REACT_DEVELOPER_TOOLS);
     mainWindow.webContents.openDevTools();
-  }
+  // }
 
   mainWindow.version = app.getVersion();
+  log.info('index createWindow app.getVersion() ', app.getVersion());
 
   // Emitted when the window is closed.
   mainWindow.on('closed', () => {
@@ -44,18 +49,19 @@ const createWindow = async () => {
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
 app.on('ready', () => {
-  createWindow();
-  sendStatusToWindow('ola ole');
-  const server = 'http://localhost:3000/nuts';
-  const feed = `${server}/update/${process.platform}/${app.getVersion()}`;
-  console.log('index feed feed', feed);
+  createWindow().then(() => {
+    sendStatusToWindow('ola ole');
+    const server = 'http://localhost:3000/nuts';
+    const feed = `${server}/update/${process.platform}/${app.getVersion()}`;
+    log.info('index feed feed', feed);
 
-  autoUpdater.setFeedURL(feed);
+    autoUpdater.setFeedURL(feed);
 
-  setInterval(() => {
-    sendStatusToWindow('feedurl ', feed);
-    autoUpdater.checkForUpdates()
-  }, 60000)
+    setInterval(() => {
+      sendStatusToWindow('feedurl ' + autoUpdater.getFeedURL());
+      autoUpdater.checkForUpdates();
+    }, 30000)
+  });
 });
 
 // Quit when all windows are closed.
@@ -82,7 +88,7 @@ app.on('activate', () => {
 // Auto updates
 //-------------------------------------------------------------------
 const sendStatusToWindow = (text) => {
-  console.log('index sendStatusToWindow text', text);
+  log.info('index sendStatusToWindow text', text);
   // log.info(text);
   if (mainWindow) {
     mainWindow.webContents.send('message', text);
