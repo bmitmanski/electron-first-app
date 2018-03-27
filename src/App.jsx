@@ -9,14 +9,23 @@ class App extends React.Component {
 
   constructor(props) {
     super(props);
-    var config = {
+   /* var config = {
       apiKey: "AIzaSyDVSWdb1vg2F4s5X2eFzMthX6l2hQU_1AI",
       authDomain: "mitapp-1.firebaseapp.com",
       databaseURL: "https://mitapp-1.firebaseio.com",
       projectId: "mitapp-1",
       storageBucket: "mitapp-1.appspot.com",
       messagingSenderId: "1092311482785"
+    };*/
+
+    //local.dealreporter.com
+    var config = {
+      apiKey: "AIzaSyDkuc-LEKvwFqUAUL9az7WhBe8gt0eYgIw",
+      databaseURL: "ws://local.dealreporter.com:5000"
     };
+
+    //TODO logs
+
     console.log('App constructor initapp');
     firebase.initializeApp(config);
 

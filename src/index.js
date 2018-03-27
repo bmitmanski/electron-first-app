@@ -60,11 +60,11 @@ const createWindow = async () => {
     const feed = `${server}/update/${process.platform}/${app.getVersion()}`;
     log.info('index feed feed', feed);
 
-    autoUpdater.setFeedURL(feed);
-    setInterval(() => {
-      sendStatusToWindow('feedurl ' + autoUpdater.getFeedURL());
-      autoUpdater.checkForUpdates();
-    }, 30000)
+    // autoUpdater.setFeedURL(feed);
+    // setInterval(() => {
+    //   sendStatusToWindow('feedurl ' + autoUpdater.getFeedURL());
+    //   autoUpdater.checkForUpdates();
+    // }, 30000)
   });
 
   // Emitted when the window is closed.
