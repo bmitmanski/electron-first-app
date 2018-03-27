@@ -1,12 +1,26 @@
-import { app, BrowserWindow, autoUpdater, dialog } from 'electron';
+import { app, BrowserWindow, autoUpdater,  dialog } from 'electron';
+// import { autoUpdater } from "electron-updater"
 import installExtension, { REACT_DEVELOPER_TOOLS } from 'electron-devtools-installer';
 import { enableLiveReload } from 'electron-compile';
 var log = require('electron-log');
-autoUpdater.logger = log;
-autoUpdater.logger.transports.file.level = "info"
+
+const sendStatusToWindow = (text) => {
+  log.info('index sendStatusToWindow text', text);
+  // log.info(text);
+  if (mainWindow) {
+    mainWindow.webContents.send('message', text);
+  }
+};
+
+autoUpdater.logger = sendStatusToWindow;
+// autoUpdater.logger.transports.file.level = "info";
 log.transports.file.level = 'info';
-log.transports.file.file = 'log.log';
-require('electron-squirrel-startup');
+log.transports.file.file = __dirname + '/mitapp.log';
+// require('electron-squirrel-startup');
+
+if (require('electron-squirrel-startup')) {
+  app.quit();
+}
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let mainWindow;
@@ -29,12 +43,29 @@ const createWindow = async () => {
 
   // Open the DevTools.
   // if (isDevMode) {
-    await installExtension(REACT_DEVELOPER_TOOLS);
+  installExtension(REACT_DEVELOPER_TOOLS).then((name) => {
+    log.info('index name name', name);
     mainWindow.webContents.openDevTools();
+  });
   // }
 
   mainWindow.version = app.getVersion();
   log.info('index createWindow app.getVersion() ', app.getVersion());
+
+
+  mainWindow.webContents.once('did-frame-finish-load', () => {
+    sendStatusToWindow('did-frame-finish-load');
+
+    const server = 'http://localhost:3000';
+    const feed = `${server}/update/${process.platform}/${app.getVersion()}`;
+    log.info('index feed feed', feed);
+
+    autoUpdater.setFeedURL(feed);
+    setInterval(() => {
+      sendStatusToWindow('feedurl ' + autoUpdater.getFeedURL());
+      autoUpdater.checkForUpdates();
+    }, 30000)
+  });
 
   // Emitted when the window is closed.
   mainWindow.on('closed', () => {
@@ -51,16 +82,7 @@ const createWindow = async () => {
 app.on('ready', () => {
   createWindow().then(() => {
     sendStatusToWindow('ola ole');
-    const server = 'http://localhost:3000/nuts';
-    const feed = `${server}/update/${process.platform}/${app.getVersion()}`;
-    log.info('index feed feed', feed);
 
-    autoUpdater.setFeedURL(feed);
-
-    setInterval(() => {
-      sendStatusToWindow('feedurl ' + autoUpdater.getFeedURL());
-      autoUpdater.checkForUpdates();
-    }, 30000)
   });
 });
 
@@ -81,19 +103,15 @@ app.on('activate', () => {
   }
 });
 
+
+
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and import them here.
 
 //-------------------------------------------------------------------
 // Auto updates
 //-------------------------------------------------------------------
-const sendStatusToWindow = (text) => {
-  log.info('index sendStatusToWindow text', text);
-  // log.info(text);
-  if (mainWindow) {
-    mainWindow.webContents.send('message', text);
-  }
-};
+
 
 autoUpdater.on('checking-for-update', () => {
   sendStatusToWindow('Checking for update...');
@@ -122,7 +140,7 @@ autoUpdater.on('update-downloaded', info => {
     type: 'info',
     buttons: ['Restart', 'Later'],
     title: 'Application Update',
-    message: process.platform === 'win32' ? releaseNotes : releaseName,
+    message: process.platform === 'win32' ? 'DADA' : 'BABA',
     detail: 'A new version has been downloaded. Restart the application to apply the updates.'
   };
 

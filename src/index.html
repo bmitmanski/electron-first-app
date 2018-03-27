@@ -25,5 +25,13 @@ render();
 if (module.hot) {
   module.hot.accept(render);
 }
+
+document.addEventListener("keydown", function (e) {
+  if (e.which === 123) {
+    currentWindow.toggleDevTools();
+  } else if (e.which === 116) {
+    location.reload();
+  }
+});
 </script>
 </html>

@@ -27,7 +27,6 @@ var nuts = Nuts({
   cacheMaxAge: 1000 * 60 * 3
 });
 
-app.use('/nuts', nuts.router);
 
 app.use('/token/:uid', (req, res) => {
   const uid = req.params.uid;
@@ -41,8 +40,6 @@ app.use('/token/:uid', (req, res) => {
     });
 });
 
-app.use('/', (req, res) => {
-  res.send('bumcyk');
-});
+app.use('/', nuts.router);
 
 app.listen(3000, () => console.log('Example app listening on port 3000!'));
