@@ -1,7 +1,7 @@
 {
   "name": "electronMitApp",
   "productName": "electronMitApp",
-  "version": "0.1.20",
+  "version": "0.1.23",
   "description": "My Electron application description",
   "main": "src/index.js",
   "scripts": {
