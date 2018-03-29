@@ -20,12 +20,12 @@ let app = express();
 //   interval: 180
 // };
 
-var nuts = Nuts({
-  // GitHub configuration
-  repository: "bmitmanski/electron-first-app",
-  token: "",
-  cacheMaxAge: 1000 * 60 * 3
-});
+// var nuts = Nuts({
+//   // GitHub configuration
+//   repository: "bmitmanski/electron-first-app",
+//   token: "",
+//   cacheMaxAge: 1000 * 60 * 3
+// });
 
 
 app.use('/token/:uid', (req, res) => {
@@ -40,6 +40,6 @@ app.use('/token/:uid', (req, res) => {
     });
 });
 
-app.use('/', nuts.router);
+// app.use('/', nuts.router);
 
 app.listen(3000, () => console.log('Example app listening on port 3000!'));

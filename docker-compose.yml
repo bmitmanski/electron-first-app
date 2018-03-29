@@ -1,7 +1,18 @@
 version: "2.1"
 
 services:
+  acc_test:
+    build: acc_test
+    depends_on:
+      - docker.firebaseio.com
+    volumes:
+      - ./acc_test/test:/usr/src/acceptance-test/test
+    command: npm test
+
   docker.firebaseio.com:
     build: firebase
     ports:
-      - "5000:5000"
+          - "5000"
+    environment:
+      - DEBUG=* mocha
+
