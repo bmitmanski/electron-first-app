@@ -7,12 +7,14 @@ services:
       - docker.firebaseio.com
     volumes:
       - ./acc_test/test:/usr/src/acceptance-test/test
+    environment:
+      - FIREBASE_URL=ws://docker.firebaseio.com:5000
     command: npm test
 
   docker.firebaseio.com:
     build: firebase
     ports:
-          - "5000"
+      - "5000:5000"
     environment:
       - DEBUG=* mocha
 

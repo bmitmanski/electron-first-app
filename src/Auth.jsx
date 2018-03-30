@@ -50,12 +50,14 @@ class Auth extends React.Component {
 
     //async / await
     try {
-      // const token = await rp('http://localhost:3000/token/' + uid);
-      // console.log('Auth auth toekn', token);
-      // await this.props.db.auth().signInWithCustomToken(token)
+      const token = await rp('http://localhost:3000/token/' + uid);
+      console.log('Auth auth toekn', token);
+      await this.props.db.auth().signInWithCustomToken(token)
 
-      const token = 'eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiIxMTIiLCJpYXQiOjE1MjIyMzk0OTUsImV4cCI6MTUyMjI0MzA5NSwiYXVkIjoiaHR0cHM6Ly9pZGVudGl0eXRvb2xraXQuZ29vZ2xlYXBpcy5jb20vZ29vZ2xlLmlkZW50aXR5LmlkZW50aXR5dG9vbGtpdC52MS5JZGVudGl0eVRvb2xraXQiLCJpc3MiOiJmaXJlYmFzZS1hZG1pbnNkay0xcWtmdkBtaXRhcHAtMS5pYW0uZ3NlcnZpY2VhY2NvdW50LmNvbSIsInN1YiI6ImZpcmViYXNlLWFkbWluc2RrLTFxa2Z2QG1pdGFwcC0xLmlhbS5nc2VydmljZWFjY291bnQuY29tIn0.kBh3ie53EA-wcJfGVFVcDo5XUT-b4QK2m__B5cqdoIYbWZjYTCR_sYp7gX0f-MAs2sDiNJy_mFcipW35dfyI5c_uKuY_9n-0n6w_1cCqAKGdD54As6Re4GpxvhlQMo-N7skyTnBkxvG0AuweakPwqhz0G6Zeg5AvaQf_FwQDhla0lAObyGsltaktHeM9MMHnuDpAGgX4ZI8D43KG2VGhZiadGYLpggx55i3Pu7FXx7WDmRde7u0ltwz5NA_e0OBmEUrPTnpGzNQg97bLKPROfLoUkqDbfLTk6-ebUEj3kdX4J3CwwJo4LFMp_jVJkgEzWf0gD6JuemWfNGOBLLw6mQ';
-      await this.props.db.auth().signInWithCustomToken(token);
+      // const token = 'eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiIxMTIiLCJpYXQiOjE1MjIyMzk0OTUsImV4cCI6MTUyMjI0MzA5NSwiYXVkIjoiaHR0cHM6Ly9pZGVudGl0eXRvb2xraXQuZ29vZ2xlYXBpcy5jb20vZ29vZ2xlLmlkZW50aXR5LmlkZW50aXR5dG9vbGtpdC52MS5JZGVudGl0eVRvb2xraXQiLCJpc3MiOiJmaXJlYmFzZS1hZG1pbnNkay0xcWtmdkBtaXRhcHAtMS5pYW0uZ3NlcnZpY2VhY2NvdW50LmNvbSIsInN1YiI6ImZpcmViYXNlLWFkbWluc2RrLTFxa2Z2QG1pdGFwcC0xLmlhbS5nc2VydmljZWFjY291bnQuY29tIn0.kBh3ie53EA-wcJfGVFVcDo5XUT-b4QK2m__B5cqdoIYbWZjYTCR_sYp7gX0f-MAs2sDiNJy_mFcipW35dfyI5c_uKuY_9n-0n6w_1cCqAKGdD54As6Re4GpxvhlQMo-N7skyTnBkxvG0AuweakPwqhz0G6Zeg5AvaQf_FwQDhla0lAObyGsltaktHeM9MMHnuDpAGgX4ZI8D43KG2VGhZiadGYLpggx55i3Pu7FXx7WDmRde7u0ltwz5NA_e0OBmEUrPTnpGzNQg97bLKPROfLoUkqDbfLTk6-ebUEj3kdX4J3CwwJo4LFMp_jVJkgEzWf0gD6JuemWfNGOBLLw6mQ';
+      // const token = 'dada';
+
+      // await this.props.db.auth().signInWithCustomToken(token);
 
     } catch (error) {
       console.error(error);

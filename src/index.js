@@ -1,8 +1,9 @@
-import { app, BrowserWindow, autoUpdater,  dialog } from 'electron';
+import { app, BrowserWindow, autoUpdater, dialog } from 'electron';
 // import { autoUpdater } from "electron-updater"
 import installExtension, { REACT_DEVELOPER_TOOLS } from 'electron-devtools-installer';
 import { enableLiveReload } from 'electron-compile';
-var log = require('electron-log');
+
+const log = require('electron-log');
 
 const sendStatusToWindow = (text) => {
   log.info('index sendStatusToWindow text', text);
@@ -15,7 +16,7 @@ const sendStatusToWindow = (text) => {
 autoUpdater.logger = sendStatusToWindow;
 // autoUpdater.logger.transports.file.level = "info";
 log.transports.file.level = 'info';
-log.transports.file.file = __dirname + '/mitapp.log';
+log.transports.file.file = `${__dirname}/mitapp.log`;
 // require('electron-squirrel-startup');
 
 if (require('electron-squirrel-startup')) {
@@ -82,7 +83,6 @@ const createWindow = async () => {
 app.on('ready', () => {
   createWindow().then(() => {
     sendStatusToWindow('ola ole');
-
   });
 });
 
@@ -104,7 +104,6 @@ app.on('activate', () => {
 });
 
 
-
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and import them here.
 
@@ -116,22 +115,22 @@ app.on('activate', () => {
 autoUpdater.on('checking-for-update', () => {
   sendStatusToWindow('Checking for update...');
 });
-autoUpdater.on('update-available', info => {
-  sendStatusToWindow('Update available. ' + info);
+autoUpdater.on('update-available', (info) => {
+  sendStatusToWindow(`Update available. ${info}`);
 });
-autoUpdater.on('update-not-available', info => {
-  sendStatusToWindow('Update not available. ' + info);
+autoUpdater.on('update-not-available', (info) => {
+  sendStatusToWindow(`Update not available. ${info}`);
 });
-autoUpdater.on('error', err => {
+autoUpdater.on('error', (err) => {
   sendStatusToWindow(`Error in auto-updater: ${err.toString()}`);
 });
-autoUpdater.on('download-progress', progressObj => {
+autoUpdater.on('download-progress', (progressObj) => {
   sendStatusToWindow(
-    `Download speed: ${progressObj.bytesPerSecond} - Downloaded ${progressObj.percent}% (${progressObj.transferred} + '/' + ${progressObj.total} + )`
+    `Download speed: ${progressObj.bytesPerSecond} - Downloaded ${progressObj.percent}% (${progressObj.transferred} + '/' + ${progressObj.total} + )`,
   );
 });
-autoUpdater.on('update-downloaded', info => {
-  sendStatusToWindow('Update downloaded; will install now '+info);
+autoUpdater.on('update-downloaded', (info) => {
+  sendStatusToWindow(`Update downloaded; will install now ${info}`);
   // Wait 5 seconds, then quit and install
   // In your application, you don't need to wait 500 ms.
   // You could call autoUpdater.quitAndInstall(); immediately
@@ -141,11 +140,11 @@ autoUpdater.on('update-downloaded', info => {
     buttons: ['Restart', 'Later'],
     title: 'Application Update',
     message: process.platform === 'win32' ? 'DADA' : 'BABA',
-    detail: 'A new version has been downloaded. Restart the application to apply the updates.'
+    detail: 'A new version has been downloaded. Restart the application to apply the updates.',
   };
 
   dialog.showMessageBox(dialogOpts, (response) => {
-    if (response === 0) autoUpdater.quitAndInstall()
-  })
+    if (response === 0) autoUpdater.quitAndInstall();
+  });
   // autoUpdater.quitAndInstall();
 });

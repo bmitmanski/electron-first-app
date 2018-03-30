@@ -20,14 +20,16 @@ class App extends React.Component {
 
     //local.dealreporter.com
     var config = {
-      apiKey: "AIzaSyDkuc-LEKvwFqUAUL9az7WhBe8gt0eYgIw",
+      apiKey: 'x',
       databaseURL: "ws://local.dealreporter.com:5000"
     };
 
     //TODO logs
 
-    console.log('App constructor initapp');
-    firebase.initializeApp(config);
+    console.log('App constructor initapp ', firebase.apps);
+    if (!firebase.apps.length) {
+      firebase.initializeApp(config);
+    }
 
     ipcRenderer.on('message', (event, message) => {
       console.log(event, message);
